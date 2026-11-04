@@ -68,9 +68,8 @@ module.exports = class PNG {
           break;
 
         case 'IDAT':
-          for (i = 0; i < chunkSize; i++) {
-            this.imgData.push(this.data[this.pos++]);
-          }
+          this.imgData.push(this.data.subarray(this.pos, this.pos + chunkSize));
+          this.pos += chunkSize;
           break;
 
         case 'tRNS':
@@ -140,7 +139,7 @@ module.exports = class PNG {
               break;
           }
 
-          this.imgData = new Buffer(this.imgData);
+          this.imgData = Buffer.concat(this.imgData);
           return;
           break;
 
